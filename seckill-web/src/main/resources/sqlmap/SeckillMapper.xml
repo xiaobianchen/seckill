@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.arch.seckill.dao.SeckillDao">
+    <sql id="select_all">
+    	SELECT
+		seckillId
+		,name
+		,number
+		,startTime
+		,endTime
+		,createTime
+		FROM t_seckill
+    </sql>
+    <insert id="create" parameterType="Seckill" useGeneratedKeys="true" keyProperty="id">
+    	INSERT INTO t_seckill(
+    name,    number,    startTime,    endTime,    createTime  )
+		VALUES(
+#{name},#{number},#{startTime},#{endTime},#{createTime})
+    </insert>
+
+    <select id="findById" parameterType="map" resultType="Seckill">
+        <include refid="select_all"></include>
+        WHERE id = #{id} and isDeleted = 0
+    </select>
+
+    <select id="queryAll" parameterType="map" resultType="Seckill">
+        <include refid="select_all"/>
+    </select>
+
+    <delete id="delete" parameterType="map">
+		update `t_seckill` set isDeleted = 1 WHERE id =#{id}
+	</delete>
+
+    <update id="update" parameterType="Seckill">
+        UPDATE  t_seckill
+        SET
+		  name = #{name},   number = #{number},   startTime = #{startTime},   endTime = #{endTime},   		
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryByConditionWithAnd" parameterType="Seckill" resultType="Seckill">
+        <include refid="select_all"></include>
+        WHERE 1=1
+        <if test="seckillId !=null">
+            and
+            seckillId = #{seckillId}
+        </if>
+        <if test="name !=null">
+            and
+            name = #{name}
+        </if>
+        <if test="number !=null and number!=0">
+            and
+            number = #{number}
+        </if>
+        <if test="startTime !=null">
+            and
+            startTime = #{startTime}
+        </if>
+        <if test="endTime !=null">
+            and
+            endTime = #{endTime}
+        </if>
+        <if test="createTime !=null">
+            and
+            createTime = #{createTime}
+        </if>
+    </select>
+</mapper>

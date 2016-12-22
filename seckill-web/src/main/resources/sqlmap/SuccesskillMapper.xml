@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.arch.seckill.dao.SuccesskillDao">
-        <sql id="select_all">
+    <sql id="select_all">
     	SELECT
 		seckillProductId
 		,userPhone
@@ -17,16 +17,25 @@
 		VALUES(
 #{status},#{createTime})
     </insert>
-    
-     <select id="findById" parameterType="map" resultType="Successkill">
-        <include refid="select_all"></include>
-		WHERE id = #{id} and isDeleted = 0
+
+    <insert id="insertSuccessKill" parameterType="Successkill" useGeneratedKeys="true" keyProperty="id">
+        INSERT ignore INTO t_successkill(seckillProductId,userPhone,status)
+        VALUES (#{seckillId},#{userPhone},0)
+    </insert>
+
+    <select id="queryByIdWithSeckill" resultType="SuccessKill" parameterType="long">
+
     </select>
-    
+
+    <select id="findById" parameterType="map" resultType="Successkill">
+        <include refid="select_all"></include>
+        WHERE id = #{id} and isDeleted = 0
+    </select>
+
     <delete id="delete" parameterType="map">
 		update `t_successkill` set isDeleted = 1 WHERE id =#{id}
 	</delete>
-    
+
     <update id="update" parameterType="Successkill">
         UPDATE  t_successkill
         SET
@@ -36,17 +45,26 @@
 
     <select id="queryByConditionWithAnd" parameterType="Successkill" resultType="Successkill">
         <include refid="select_all"></include>
-		WHERE 1=1
-						<if test="seckillProductId !=null">
-		        and
-		seckillProductId = #{seckillProductId}  </if>		  
-		   				<if test="userPhone !=null">
-		        and
-		userPhone = #{userPhone}  </if>		  
-		   				<if test="status !=null and status!=0">
-		        and
-		status = #{status}  </if>		  
-		   				<if test="createTime !=null">
-		        and
-		createTime = #{createTime}  </if>     </select>
+        WHERE 1=1
+        <if test="seckillProductId !=null">
+            and
+            seckillProductId = #{seckillProductId}
+        </if>
+        <if test="userPhone !=null">
+            and
+            userPhone = #{userPhone}
+        </if>
+        <if test="status !=null and status!=0">
+            and
+            status = #{status}
+        </if>
+        <if test="createTime !=null">
+            and
+            createTime = #{createTime}
+        </if>
+    </select>
+
+
+
+
 </mapper>

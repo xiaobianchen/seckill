@@ -21,6 +21,12 @@ public class SecKillTest extends AbstractSpringContextTest {
         System.out.println(seckillDtoList);
     }
 
+    @Test
+    public void testFindBySecKillId(){
+        SeckillDto seckillDto = seckillService.findById(2L);
+        System.out.println(seckillDto);
+    }
+
 
 
 }

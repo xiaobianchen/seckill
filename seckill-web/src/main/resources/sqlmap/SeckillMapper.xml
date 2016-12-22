@@ -22,16 +22,17 @@
 
     <select id="findById" parameterType="map" resultType="Seckill">
         <include refid="select_all"></include>
-        WHERE id = #{id} and isDeleted = 0
+        WHERE id = #{id}
+    </select>
+
+    <select id="findBySecKillId" parameterType="map" resultType="Seckill">
+        <include refid="select_all"/>
+        WHERE seckillId=#{seckillId}
     </select>
 
     <select id="queryAll" parameterType="map" resultType="Seckill">
         <include refid="select_all"/>
     </select>
-
-    <delete id="delete" parameterType="map">
-		update `t_seckill` set isDeleted = 1 WHERE id =#{id}
-	</delete>
 
     <update id="update" parameterType="Seckill">
         UPDATE  t_seckill
